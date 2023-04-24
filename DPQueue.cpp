@@ -85,28 +85,30 @@ namespace CS3358_SP2023_A7
    }
 
 
-//Constructor, Verifies capacity to be valid, if not overwrites with default
+
    p_queue::p_queue(size_type initial_capacity) : capacity(initial_capacity),
                                                   used(0)
+   // Pre:  (none)
+   // Post: A priority queue of valid size has been created 
    {
-       if (initial_capacity < 1){
-           capacity = DEFAULT_CAPACITY;
-      }
+      if (initial_capacity < 1){capacity = DEFAULT_CAPACITY;}
       heap = new ItemType[capacity];
    }
 
-//Copy Constructor, Creates heap of same capacity, and same used, copies data
+
    p_queue::p_queue(const p_queue& src) : capacity(src.capacity), used(src.used)
+   // Pre:  (none)
+   // Post: A priority queue of the same size as the src has been created, and the data 
+   //       has been copied over
    {
        heap = new ItemType[capacity];
-       for (size_type i = 0; i < capacity; i++){
-            heap[i] = src.heap[i];
-      }
-
+       for (size_type i = 0; i < capacity; i++){heap[i] = src.heap[i];}
    }
 
-//Destructor
+
    p_queue::~p_queue()
+   // Pre:  (none)
+   // Post: The queue has been deallocated from memory
    {
       delete [] heap;
       heap = 0;
@@ -114,59 +116,62 @@ namespace CS3358_SP2023_A7
 
 
 
-   // MODIFICATION MEMBER FUNCTIONS
+// MODIFICATION MEMBER FUNCTIONS
 
-
-// = Operator overload
    p_queue& p_queue::operator=(const p_queue& rhs)
+   // Pre:  (none)
+   // Post: The assignment operator has been overloaded
    {
        if (this != &rhs)
         {
-    //Create a new dynamic array of initial capacity set to that of the to be
-    //copied arrays capacity
+    //Create a new dynamic array with initial capacity set to that of the rhs
+    //arrays capacity
             ItemType* newHeap = new ItemType[rhs.capacity];
 
     //Cycles through the arrays, copying each value over to the new array
-            for (size_type i = 0; i < rhs.used; i++){
-                newHeap[i] = rhs.heap[i];
-            }
+            for (size_type i = 0; i < rhs.used; i++){newHeap[i] = rhs.heap[i];}
     //Remove data from old array
             delete [] heap;
-
     //Transfer data from new array to old array
             heap = newHeap;
             capacity = rhs.capacity;
             used = rhs.used;
-            }
+        }
    return *this;
    }
 
 
    void p_queue::push(const value_type& entry, size_type priority)
+   // Pre:  (none)
+   // Post: The given value "entry" and its priority have been added to
+   //       the queue, maintaining both completeness and order
    {
         if (used >= capacity){
             //Increases the capacity by roughly 1.5 times or at least by 1
             resize(size_type(1.5*capacity) + 1);
         }
-        //Adds new value to the end of the array
+        //Adds new value to the end of the array, maintaining completeness
         heap[used].data = entry;
         heap[used].priority = priority;
         size_type i = used;
         used++;
 
 
-        //ReHeapify the SemiHeap
-        //(While not at Root, if current node has higher priority than its
-        //parent, swap!
+        //Reheapify the Semiheap, reordering to maintain order requirements
+        //While not at Root, if current node has higher priority than its
+        //parent, swap
         while(i !=0 && heap[i].priority > parent_priority(i)){
             swap_with_parent(i);
             i = parent_index(i);
-
         }
-
    }
 
+//Dequeue the highest priority item
    void p_queue::pop(){
+   // Pre:  (none)
+   // Post: The highest priority item in the queue has been removed
+   //       maintaining both completeness and order
+        //Ensure a non empty heap
         assert(size() > 0);
         //If only one item, no swapping necessary
         if (used == 1){
@@ -177,18 +182,20 @@ namespace CS3358_SP2023_A7
         //Replace first item with last item
         heap[0].data = heap[used-1].data;
         heap[0].priority = heap[used-1].priority;
+        //Remove last item, maintaining completeness
         used--;
 
         //Helper indexes
         size_type index_parent = 0,
                   index_child = 0;
 
-        //If still more than one item
+        //If still more than one item after removing the last
         if(used > 1){
             //While not a leaf, and priority is smaller than a child, swap with
             //the biggest child
             while(!is_leaf(index_parent) && heap[index_parent].priority
                                        <= big_child_priority(index_parent)){
+               
                 index_child = big_child_index(index_parent);
                 swap_with_parent(big_child_index(index_parent));
                 index_parent = index_child;
@@ -196,7 +203,7 @@ namespace CS3358_SP2023_A7
         }
    }
 
-   // CONSTANT MEMBER FUNCTIONS
+// CONSTANT MEMBER FUNCTIONS
 
    p_queue::size_type p_queue::size() const
    {
@@ -214,7 +221,7 @@ namespace CS3358_SP2023_A7
       return heap[0].data;
    }
 
-   // PRIVATE HELPER FUNCTIONS
+// PRIVATE HELPER FUNCTIONS
    void p_queue::resize(size_type new_capacity)
    // Pre:  (none)
    // Post: The size of the dynamic array pointed to by heap (thus
@@ -231,11 +238,11 @@ namespace CS3358_SP2023_A7
         //Temporary heap
          ItemType* newHeap = new ItemType[new_capacity];
 
-      // Deep copy items
+      //Copy items to the temporary heap
       for(size_type i = 0; i < used; ++i){
          newHeap[i] = heap[i];
       }
-      //Replace old heap with temp heap
+      //Replace old heap with temporary heap
       delete [] heap;
       heap = newHeap;
       capacity = new_capacity;
