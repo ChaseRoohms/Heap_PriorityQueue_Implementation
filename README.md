@@ -1,6 +1,7 @@
 # Heap_PriorityQueue_Implementation
 Header and implementation files for implementing a Priority Queue using a C++ Heap. Header file was given by professor, implementation was to be filled out by the student.
 These files come from an assignment in my Data Structures and Algorithms class, taught by Dr. Lee S. Koh, at Texas State University.
+
 These files show not only my understanding of one of the building block structures in C++, but also my ability to code and comment in a neat and concise fashion.
 
 
