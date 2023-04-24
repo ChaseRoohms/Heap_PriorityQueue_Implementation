@@ -1,12 +1,12 @@
 # Heap_PriorityQueue_Implementation
-Header and implementation files for implementing a Priority Queue using a C++ Heap. Header file was given by professor, implementation was to be filled out by the student.
-These files come from an assignment in my Data Structures and Algorithms class, taught by Dr. Lee S. Koh, at Texas State University.
+Header and implementation files for implementing a Priority Queue using a C++ Heap. These files come from an assignment in my Data Structures and Algorithms class, taught by Dr. Lee S. Koh, at Texas State University. The header file was given by professor, implementation was to be filled out by the student.
 
-**These files show not only my understanding of one of the building block structures in C++, but also my ability to code and comment in a neat and concise fashion.**
+These files show not only my understanding of one of the building block structures in C++, but also my ability to code and comment in a neat and concise fashion.
 
+## Purpose
 
 Implements various heap functions for testing and utilization of the priority queue, such as:
-
+```
 print_tree - Accessor
 Displays the heap in tree form for debugging
 
@@ -39,11 +39,12 @@ Returns the priority of the largest child of the given index
 
 swap_with_parent - Mutator
 Swaps the given index with its parent
-
+```
 
 Also includes:
+```
 Constructors with default values in case of non valid user values
 Asignment operator overloading
 Dynamic memory through the use of a resize function
 Size and empty functions for use in other functions
-
+```
